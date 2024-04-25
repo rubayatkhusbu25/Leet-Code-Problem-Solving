@@ -1,0 +1,22 @@
+
+class Solution {
+public:
+    int longestIdealString(string s, int k) {
+        int n = s.length();
+        vector<int> dp(27, 0); // Store the maximum length of ideal subsequence for each character ending at index i
+        
+        for (char c : s) {
+            vector<int> new_dp(27, 0); // Temporary vector to store updated values for current character
+            for (int j = 0; j < 27; ++j) {
+                int diff = abs(c - (j == 26 ? '{' : 'a' + j));
+                if (diff <= k) {
+                    new_dp[c - 'a'] = max(new_dp[c - 'a'], dp[j] + 1);
+                }
+                new_dp[j] = max(new_dp[j], dp[j]); // Update the maximum length of ideal subsequence for other characters
+            }
+            swap(dp, new_dp); // Update dp for the next character
+        }
+
+        return *max_element(dp.begin(), dp.end());
+    }
+};
