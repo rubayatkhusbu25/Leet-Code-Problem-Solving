@@ -1,0 +1,44 @@
+#include <vector>
+#include <climits> // For INT_MAX
+#include <algorithm> // For min()
+
+class Solution {
+public:
+    int minFallingPathSum(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int minPrev = INT_MAX, secondMinPrev = INT_MAX;
+        
+        // Initialize minPrev and secondMinPrev with the values of the first row
+        for (int j = 0; j < n; ++j) {
+            if (grid[0][j] < minPrev) {
+                secondMinPrev = minPrev;
+                minPrev = grid[0][j];
+            } else if (grid[0][j] < secondMinPrev) {
+                secondMinPrev = grid[0][j];
+            }
+        }
+        
+        // Iterate through the rows of the grid starting from the second row
+        for (int i = 1; i < n; ++i) {
+            int minCurr = INT_MAX, secondMinCurr = INT_MAX;
+            for (int j = 0; j < n; ++j) {
+                int minPrevHere = (grid[i - 1][j] == minPrev) ? secondMinPrev : minPrev;
+                grid[i][j] += minPrevHere;
+                
+                // Update minCurr and secondMinCurr
+                if (grid[i][j] < minCurr) {
+                    secondMinCurr = minCurr;
+                    minCurr = grid[i][j];
+                } else if (grid[i][j] < secondMinCurr) {
+                    secondMinCurr = grid[i][j];
+                }
+            }
+            // Update minPrev and secondMinPrev for the next row
+            minPrev = minCurr;
+            secondMinPrev = secondMinCurr;
+        }
+        
+        // Find the minimum falling path sum in the last row
+        return minPrev;
+    }
+};
