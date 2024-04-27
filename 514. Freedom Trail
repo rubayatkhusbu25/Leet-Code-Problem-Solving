@@ -1,0 +1,43 @@
+
+class Solution {
+public:
+    int findRotateSteps(string ring, string key) {
+        int n = ring.size();
+        int m = key.size();
+        
+        // Create a map to store the indices of each character in the ring
+        unordered_map<char, vector<int>> charIndices;
+        for (int i = 0; i < n; ++i) {
+            charIndices[ring[i]].push_back(i);
+        }
+        
+        // Create a DP array
+        vector<vector<int>> dp(m + 1, vector<int>(n, INT_MAX));
+        
+        // Initialize the first row of DP array
+        for (int j : charIndices[key[0]]) {
+            dp[1][j] = min(j, n - j) + 1;
+        }
+        
+        // Iterate through each character in the key
+        for (int i = 2; i <= m; ++i) {
+            // Iterate through each position of the current character in the ring
+            for (int j : charIndices[key[i - 1]]) {
+                // Iterate through each position of the previous character in the ring
+                for (int k : charIndices[key[i - 2]]) {
+                    // Calculate the minimum steps needed to align the current key character with the current ring character
+                    int distance = min(abs(j - k), n - abs(j - k));
+                    dp[i][j] = min(dp[i][j], dp[i - 1][k] + distance + 1);
+                }
+            }
+        }
+        
+        // Find the minimum steps needed to align all characters in the key
+        int minSteps = INT_MAX;
+        for (int j : charIndices[key.back()]) {
+            minSteps = min(minSteps, dp[m][j]);
+        }
+        
+        return minSteps;
+    }
+};
