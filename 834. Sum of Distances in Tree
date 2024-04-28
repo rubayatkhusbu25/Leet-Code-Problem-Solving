@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
+        vector<vector<int>> tree(n);
+        vector<int> count(n, 1); // Number of nodes in subtree rooted at i
+        vector<int> res(n, 0);   // Result array to store sum of distances
+        
+        // Construct the tree
+        for (const auto& edge : edges) {
+            tree[edge[0]].push_back(edge[1]);
+            tree[edge[1]].push_back(edge[0]);
+        }
+        
+        // Calculate subtree sizes and initial sum of distances for root 0
+        dfs(0, -1, tree, count, res);
+        
+        // Calculate sum of distances for all nodes
+        calculateDistances(0, -1, tree, count, res, n);
+        
+        return res;
+    }
+    
+    // DFS to calculate subtree sizes and initial sum of distances
+    void dfs(int node, int parent, const vector<vector<int>>& tree, vector<int>& count, vector<int>& res) {
+        for (int child : tree[node]) {
+            if (child == parent) continue;
+            dfs(child, node, tree, count, res);
+            count[node] += count[child];
+            res[node] += res[child] + count[child];
+        }
+    }
+    
+    // DFS to calculate sum of distances for all nodes
+    void calculateDistances(int node, int parent, const vector<vector<int>>& tree, const vector<int>& count, vector<int>& res, int n) {
+        for (int child : tree[node]) {
+            if (child == parent) continue;
+            // Formula to calculate sum of distances for child node based on parent node
+            res[child] = res[node] - count[child] + n - count[child];
+            calculateDistances(child, node, tree, count, res, n);
+        }
+    }
+};
