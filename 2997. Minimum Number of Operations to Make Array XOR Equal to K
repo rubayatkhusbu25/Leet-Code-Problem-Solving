@@ -1,0 +1,16 @@
+#include <vector>
+#include <numeric> // for accumulate
+#include <bitset> // for bitset
+
+class Solution {
+public:
+    int minOperations(std::vector<int>& nums, int k) {
+        int xorResult = std::accumulate(nums.begin(), nums.end(), k, std::bit_xor<int>());
+        return bitCount(xorResult);
+    }
+    
+private:
+    int bitCount(int num) {
+        return std::bitset<sizeof(int) * 8>(num).count();
+    }
+};
