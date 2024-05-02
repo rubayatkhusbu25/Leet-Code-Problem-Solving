@@ -1,0 +1,26 @@
+#include <vector>
+#include <unordered_set>
+#include <algorithm>
+#include <limits>
+
+class Solution {
+public:
+    int findMaxK(std::vector<int>& nums) {
+        std::unordered_set<int> positives;
+        int maxK = std::numeric_limits<int>::min(); // Initialize with the minimum integer value
+        
+        for (int num : nums) {
+            if (num > 0) {
+                positives.insert(num);
+            }
+        }
+        
+        for (int num : nums) {
+            if (num < 0 && positives.count(-num)) {
+                maxK = std::max(maxK, std::abs(num));
+            }
+        }
+        
+        return maxK == std::numeric_limits<int>::min() ? -1 : maxK;
+    }
+};
