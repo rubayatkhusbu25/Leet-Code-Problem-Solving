@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int numRescueBoats(std::vector<int>& people, int limit) {
+        std::sort(people.begin(), people.end()); // Sort the people in ascending order
+
+        int boats = 0;
+        int left = 0; // Pointer for the lightest person
+        int right = people.size() - 1; // Pointer for the heaviest person
+
+        while (left <= right) {
+            if (people[left] + people[right] <= limit) {
+                // If the lightest person can be paired with the heaviest person within the limit, load them onto the boat
+                left++;
+                right--;
+            } else {
+                // If not, load only the heaviest person onto the boat
+                right--;
+            }
+            boats++; // Increment the boat count for each iteration
+        }
+
+        return boats;
+    }
+};
