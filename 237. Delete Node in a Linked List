@@ -1,0 +1,12 @@
+class Solution {
+    public void deleteNode(ListNode node) {
+        // Check if the node or its next node is null
+        if (node == null || node.next == null)
+            return;
+        
+        // Copy the value of the next node to the current node
+        node.val = node.next.val;
+        // Delete the next node
+        node.next = node.next.next;
+    }
+}
