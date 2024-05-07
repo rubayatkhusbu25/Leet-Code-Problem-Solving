@@ -1,0 +1,41 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *   int val;
+ *   ListNode? next;
+ *   ListNode([this.val = 0, this.next]);
+ * }
+ */
+class Solution {
+  int carry=0;
+     ListNode? It(ListNode? head) {
+        if(head==null || head.next==null)
+          { 
+              carry=2*head!.val;
+              head.val=carry%10;
+              carry=carry = (carry / 10).toInt();
+
+              return head;
+          }
+
+        else{
+             ListNode? next=It(head.next);
+             carry+=2*head.val;
+             head.val=carry%10;
+             carry=(carry/10).toInt();
+             return head;
+        }
+
+    }
+    ListNode? doubleIt(ListNode? head) {
+        ListNode? doub=It(head);
+        if(carry!=0)
+           {
+              ListNode? newhead=new ListNode(carry);
+              newhead.next=doub;
+              return newhead;
+           }
+        return head;   
+    }
+
+}
