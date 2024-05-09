@@ -1,0 +1,29 @@
+class Solution {
+  int maximumHappinessSum(List<int> happiness, int k) {
+    // Initialize the number of taken children and the sum of happiness values
+    int taken = 0;
+    int ans=0;
+    int i=0;
+
+    // Sort the happiness values in descending order
+    happiness.sort((a,b)=>b.compareTo(a));
+
+    // Iterate over the sorted happiness values
+    while(taken<k && i<happiness.length){
+        // If the current happiness value minus the number of taken children is less than or equal to 0, return the sum
+        if(happiness[i]-taken <= 0) return ans;
+
+        // Add the current happiness value minus the number of taken children to the sum
+        ans+=happiness[i]-taken;
+
+        // Increment the number of taken children
+        taken++;
+
+        // Move to the next happiness value
+        i++;
+    }
+
+    // Return the sum of happiness values
+    return ans;
+  }
+}
