@@ -1,0 +1,19 @@
+class Solution {
+  List<int> kthSmallestPrimeFraction(List<int> arr, int k) {
+    Map<String, double> div = {};
+    for (int i = 0; i < arr.length - 1; i++) {
+      for (int j = i + 1; j < arr.length; j++) {
+        div["${arr[i]},${arr[j]}"] = arr[i] / arr[j];
+      }
+    }
+    
+    List<MapEntry<String, double>> entries = div.entries.toList();
+    entries.sort((a, b) => a.value.compareTo(b.value));
+    
+    // Extract the kth smallest fraction
+    String fractionKey = entries[k - 1].key;
+    List<int> result = fractionKey.split(',').map((str) => int.parse(str)).toList();
+    
+    return result;
+  }
+}
