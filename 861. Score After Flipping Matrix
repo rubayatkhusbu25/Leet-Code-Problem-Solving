@@ -1,0 +1,54 @@
+class Solution {
+    int matrixScore(List<List<int>> grid) {
+        var total = 0;
+        for (int i = 0; i < grid.length; i++) {
+            if (grid[i][0] == 0) {
+                flipRow(i, grid);
+            }
+        }
+
+        for (int i = 0; i < grid[0].length; i++) {
+            var oneCount = 0;
+            var zeroCount = 0;
+            for (int j = 0; j < grid.length; j++) {
+                if (grid[j][i] == 1) {
+                    oneCount++;
+                } else {
+                    zeroCount++;
+                }
+            }
+
+            if (zeroCount > oneCount) {
+                flipColumn(i, grid);
+            }
+        }
+
+        for (final row in grid) {
+            final binary = row.join('');
+            final number = int.parse(binary, radix: 2);
+            total += number;
+        }
+
+        return total;
+    }
+
+    void flipRow(int index, List<List<int>> grid) {
+        for (int i = 0; i < grid[0].length; i++) {
+            if (grid[index][i] == 1) {
+                grid[index][i] = 0;
+            } else {
+                grid[index][i] = 1;
+            }
+        }
+    }
+
+    void flipColumn(int index, List<List<int>> grid) {
+        for (int i = 0; i < grid.length; i++) {
+            if (grid[i][index] == 1) {
+                grid[i][index] = 0;
+            } else {
+                grid[i][index] = 1;
+            }
+        }
+    }
+}
