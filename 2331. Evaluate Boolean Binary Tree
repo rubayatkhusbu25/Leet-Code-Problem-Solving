@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *   int val;
+ *   TreeNode? left;
+ *   TreeNode? right;
+ *   TreeNode([this.val = 0, this.left, this.right]);
+ * }
+ */
+class Solution {
+  bool evaluateTree(TreeNode? root) {
+    // Helper function to evaluate the tree recursively
+    bool helper(TreeNode? root){
+        // If the node is null, return true. This is the base case for a leaf node.
+        if(root == null) return true;
+
+        // If the node is a leaf node (both left and right children are null),
+        // return true if the node's value is 1 (representing True), and false otherwise.
+        if(root.left == null && root.right == null) return root.val==1?true:false;
+
+        // If the node's value is 2 (representing OR), evaluate the left and right children
+        // and return the result of their OR operation.
+        if(root.val == 2) return helper(root.left)||helper(root.right);
+
+        // If the node's value is not 2, it must be 3 (representing AND).
+        // Evaluate the left and right children and return the result of their AND operation.
+        return helper(root.left) && helper(root.right);
+    }
+
+    // Call the helper function on the root of the tree to start the evaluation.
+    return helper(root);
+  }
+}
