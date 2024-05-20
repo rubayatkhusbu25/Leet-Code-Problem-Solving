@@ -1,0 +1,8 @@
+class Solution {
+  int subsetXORSum(List<int> n) {
+    return f(n, 0, 0);
+  }
+  int f(List<int> n, int i, x) {
+    return n.length == 0 || i == n.length ? x : f(n, i+1, x^n[i]) + f(n, i+1, x);
+  }
+}
